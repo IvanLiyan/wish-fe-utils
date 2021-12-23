@@ -1,0 +1,26 @@
+{
+  "name": "wish-fe-utils",
+  "version": "0.0.1",
+  "description": "frontent utils ",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ContextLogic/wish-fe-utils.git"
+  },
+  "keywords": [
+    "javascript、frontend"
+  ],
+  "author": "ryu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ContextLogic/wish-fe-utils/issues"
+  },
+  "homepage": "https://github.com/ContextLogic/wish-fe-utils#readme",
+  "dependencies": {
+    "classnames": "^2.3.1",
+    "dayjs": "^1.10.7"
+  }
+}
