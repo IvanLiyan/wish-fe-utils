@@ -8,7 +8,7 @@ import localStorage from "./bom/localStorage";
 import promisify from "./func/promisify";
 import cookie from "./bom/cookie";
 
-export default {
+export {
   classNames,
   datejs,
   $fetch,
