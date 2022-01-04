@@ -1,4 +1,4 @@
-# wish-fe-utils
+# @wish-fe-utils
 ## FE的基础工具包
 
 包含以下内容

@@ -1,5 +1,5 @@
 {
-  "name": "wish-fe-utils",
+  "name": "@wish/fe-utils",
   "version": "0.0.1-beta.01",
   "description": "frontent utils ",
   "main": "index.js",
