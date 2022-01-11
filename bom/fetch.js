@@ -33,12 +33,12 @@ async function $fetch(url, params, config) {
  * @param {*} data 其他数据
  */
 function ApiError(obj) {
-  var msg = obj.msg,
+  var message = obj.message,
     errorCode = obj.code,
-    data = _objectWithoutProperties(obj.data, ["msg", "code"]);
+    data = _objectWithoutProperties(obj.data, ["msg", "message", "code"]);
 
   this.name = "ApiError";
-  this.message = msg || "网络错误，请联系管理员";
+  this.message = message || "网络错误，请联系管理员";
   this.errorCode = errorCode || null;
   this.data = data || null;
   this.stack = new Error().stack;
