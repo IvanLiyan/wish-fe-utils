@@ -1,6 +1,6 @@
 {
   "name": "@wish/fe-utils",
-  "version": "0.0.1-beta.02",
+  "version": "0.0.1-beta.04",
   "description": "frontent utils ",
   "main": "index.js",
   "scripts": {

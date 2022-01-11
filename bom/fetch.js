@@ -33,20 +33,17 @@ async function $fetch(url, params, config) {
  * @param {*} data 其他数据
  */
 function ApiError(obj) {
-  var message = obj.message,
-    errorCode = obj.errorCode,
-    code = obj.code,
-    data = _objectWithoutProperties(obj, ["message", "errorCode", "code"]);
+  var msg = obj.msg,
+    errorCode = obj.code,
+    data = _objectWithoutProperties(obj.data, ["msg", "code"]);
 
   this.name = "ApiError";
-  this.message = message || "网络错误，请联系管理员";
-  this.errorCode = errorCode || code || null;
+  this.message = msg || "网络错误，请联系管理员";
+  this.errorCode = errorCode || null;
   this.data = data || null;
   this.stack = new Error().stack;
 }
 ApiError.prototype = Object.create(Error.prototype);
 ApiError.prototype.constructor = ApiError;
 
-exports.default = $fetch;
-exports.$fetch = $fetch;
-exports.ApiError = ApiError; // 此处将 ApiError 抛出，方便通过 instanceof 来判断错误类型
+export { $fetch, ApiError };
