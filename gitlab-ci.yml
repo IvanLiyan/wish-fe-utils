@@ -1,0 +1,35 @@
+stages:
+  - release
+
+variables:
+  NPM_REGISTRY: npm.infra.wish-cn.com/
+  NPM_PACKAGE_VERSION: ""
+  MANUAL_RELEASE: ""
+
+release_package_to_npm_cn:
+  image: node:12
+  stage: release
+  script:
+    - |
+      set -e
+      timestr=$(date +'%Y-%m-%d')
+      if [[ $NPM_PACKAGE_VERSION -eq "" ]]; then
+        new_branch_name="${CI_COMMIT_BRANCH/_/-}" #use - replace _ for publish version
+        NPM_PACKAGE_VERSION="0.0.1-$new_branch_name-$timestr-$CI_COMMIT_SHORT_SHA"
+      fi
+      
+      # Upload javascript package to NPM
+      echo "registry=https://"$NPM_REGISTRY > ~/.npmrc
+      echo "//"$NPM_REGISTRY":_authToken=\"$GITLAB_NPM_TOKEN\"" >> ~/.npmrc
+    
+      VERSION_LINE="\"version\": \""$NPM_PACKAGE_VERSION"\","
+      sed -i -e 's#"version".*#'"$VERSION_LINE"'#g' package.json
+      echo "before publish"
+    - npm publish 
+  tags:
+    - pod
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "weekly" && $CI_COMMIT_BRANCH == "main"
+      when: always
+    - if: $MANUAL_RELEASE == "true"
+      when: manual
