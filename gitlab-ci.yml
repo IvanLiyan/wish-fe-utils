@@ -29,7 +29,7 @@ release_package_to_npm_cn:
   tags:
     - pod
   rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "weekly" && $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "weekly" && $CI_COMMIT_BRANCH == "master"
       when: always
     - if: $MANUAL_RELEASE == "true"
       when: manual
