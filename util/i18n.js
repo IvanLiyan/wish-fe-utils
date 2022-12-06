@@ -1,6 +1,6 @@
 import { Jed } from "jed";
+import cookie from "../bom/cookie";
 import localStorage from "../bom/localStorage";
-import cookie from "./bom/cookie";
 
 const defaultLocale = "zh";
 let locale = defaultLocale;
@@ -52,8 +52,7 @@ const createJedi18nInstance = (translations) => {
   }
   return new Jed(polishedJedConfiguration);
 };
-function initJedi18nInstance(translations) {
-  debugger;
+function _initJedi18nInstance(translations) {
   jedi18n = createJedi18nInstance(translations);
   if (window.document) {
     let value = locale;
@@ -68,7 +67,7 @@ function initJedi18nInstance(translations) {
     });
   }
 }
-function changeLocale(locale) {
+function _changeLocale(locale) {
   setLocale(locale);
   window.dispatchEvent(new Event("changeLocale"));
 }
@@ -134,8 +133,21 @@ function _cni18n(context, num, singular, plural, ...args) {
   }
   return str;
 }
-export { initJedi18nInstance, changeLocale };
+
+const i18nModule = {
+  i18n: _i18n,
+  ci18n: _ci18n,
+  ni18n: _ni18n,
+  cni18n: _cni18n,
+  initJedi18nInstance: _initJedi18nInstance,
+  changeLocale: _changeLocale,
+};
+
 export const i18n = _i18n;
 export const ci18n = _ci18n;
 export const ni18n = _ni18n;
 export const cni18n = _cni18n;
+export const initJedi18nInstance = _initJedi18nInstance;
+export const changeLocale = _changeLocale;
+
+export default i18nModule;
