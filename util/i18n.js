@@ -6,25 +6,26 @@ let locale = defaultLocale;
 let LocaleTranslations;
 let jedi18n;
 let localeKey = "locale";
-const getBrowserLocale = () => {
+const _getBrowserLocale = () => {
   if (typeof navigator === "undefined" || navigator.language == null) {
     return;
   }
   const browserLocale = navigator.language.slice(0, 2);
   return browserLocale;
 };
-function getLocale() {
+function _getLocale() {
   if (typeof document == "undefined") {
     return;
   }
   return (
+    // window[localeKey] ||
     localStorage.getItem(localeKey) ||
     cookie.get(localeKey) ||
-    getBrowserLocale() ||
+    _getBrowserLocale() ||
     defaultLocale
   );
 }
-function setLocale(locale) {
+function _setLocale(locale) {
   // window[localeKey] = locale;
   localStorage.setItem(localeKey, locale);
   cookie.set(localeKey, locale);
@@ -32,7 +33,7 @@ function setLocale(locale) {
 // @ts-ignore
 const createJedi18nInstance = (translations) => {
   LocaleTranslations = translations || LocaleTranslations;
-  locale = getLocale();
+  locale = _getLocale();
   const { [locale]: jedConfiguration = {} } = LocaleTranslations;
   if (Object.keys(jedConfiguration).length == 0) {
     return new Jed({});
@@ -57,9 +58,22 @@ function _initJedi18nInstance(translations, key) {
   window.addEventListener("changeLocale", () => {
     jedi18n = createJedi18nInstance();
   });
+  // if (window.document) {
+  //   let value = locale;
+  //   Object.defineProperty(window, localeKey, {
+  //     set: function (v) {
+  //       value = v;
+  //       jedi18n = createJedi18nInstance();
+  //     },
+  //     get: function () {
+  //       return value;
+  //     },
+  //     configurable: true,
+  //   });
+  // }
 }
 function _changeLocale(locale) {
-  setLocale(locale);
+  _setLocale(locale);
   window.dispatchEvent(new Event("changeLocale"));
 }
 function _format(jedChain, args) {
@@ -130,12 +144,14 @@ const i18nModule = {
   ni18n: _ni18n,
   cni18n: _cni18n,
   initJedi18nInstance: _initJedi18nInstance,
+  getLocale: _getLocale,
   changeLocale: _changeLocale,
 };
 export const i18n = _i18n;
 export const ci18n = _ci18n;
 export const ni18n = _ni18n;
 export const cni18n = _cni18n;
-export const initJedi18nInstance = _initJedi18nInstance;
+export const getLocale = _getLocale;
 export const changeLocale = _changeLocale;
+export const initJedi18nInstance = _initJedi18nInstance;
 export default i18nModule;
