@@ -1,11 +1,11 @@
 import { Jed } from "jed";
 import cookie from "../bom/cookie";
 import localStorage from "../bom/localStorage";
-
 const defaultLocale = "zh";
 let locale = defaultLocale;
 let LocaleTranslations;
 let jedi18n;
+let localeKey = "locale";
 const getBrowserLocale = () => {
   if (typeof navigator === "undefined" || navigator.language == null) {
     return;
@@ -18,17 +18,16 @@ function getLocale() {
     return;
   }
   return (
-    window.locale ||
-    localStorage.getItem("locale") ||
-    cookie.get("locale") ||
+    localStorage.getItem(localeKey) ||
+    cookie.get(localeKey) ||
     getBrowserLocale() ||
     defaultLocale
   );
 }
 function setLocale(locale) {
-  window.locale = locale;
-  localStorage.setItem("locale", locale);
-  cookie.set("locale", locale);
+  // window[localeKey] = locale;
+  localStorage.setItem(localeKey, locale);
+  cookie.set(localeKey, locale);
 }
 // @ts-ignore
 const createJedi18nInstance = (translations) => {
@@ -52,20 +51,12 @@ const createJedi18nInstance = (translations) => {
   }
   return new Jed(polishedJedConfiguration);
 };
-function _initJedi18nInstance(translations) {
+function _initJedi18nInstance(translations, key) {
+  localeKey = key || localeKey;
   jedi18n = createJedi18nInstance(translations);
-  if (window.document) {
-    let value = locale;
-    Object.defineProperty(window, "locale", {
-      set: function (v) {
-        value = v;
-        jedi18n = createJedi18nInstance();
-      },
-      get: function () {
-        return value;
-      },
-    });
-  }
+  window.addEventListener("changeLocale", () => {
+    jedi18n = createJedi18nInstance();
+  });
 }
 function _changeLocale(locale) {
   setLocale(locale);
@@ -133,7 +124,6 @@ function _cni18n(context, num, singular, plural, ...args) {
   }
   return str;
 }
-
 const i18nModule = {
   i18n: _i18n,
   ci18n: _ci18n,
@@ -142,12 +132,10 @@ const i18nModule = {
   initJedi18nInstance: _initJedi18nInstance,
   changeLocale: _changeLocale,
 };
-
 export const i18n = _i18n;
 export const ci18n = _ci18n;
 export const ni18n = _ni18n;
 export const cni18n = _cni18n;
 export const initJedi18nInstance = _initJedi18nInstance;
 export const changeLocale = _changeLocale;
-
 export default i18nModule;
