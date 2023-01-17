@@ -79,7 +79,7 @@ function _changeLocale(locale) {
 function _format(jedChain, args) {
   try {
     return jedChain.fetch(args);
-  } catch {
+  } catch (error) {
     // pass
   }
   const str = jedChain.fetch();
