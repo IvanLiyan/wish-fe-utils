@@ -7,7 +7,7 @@ variables:
   MANUAL_RELEASE: ""
 
 release_package_to_npm_cn:
-  image: node:12
+  image: harbor.infra.wish-cn.com/upstream/node:12
   stage: release
   script:
     - |
@@ -32,4 +32,3 @@ release_package_to_npm_cn:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "weekly" && $CI_COMMIT_BRANCH == "master"
       when: always
     - if: $MANUAL_RELEASE == "true"
-      when: manual
